@@ -148,6 +148,13 @@ void left_button_pressed()
     }
 }
 
+
+void right_button_pressed_long()
+{
+    DEBUG_PRINTLN(F("Right button long-pressed. Rebooting ..."));
+    ESP.restart();
+}
+
 void right_button_pressed()
 {
     if (!BLOCK_NAVIGATION)
@@ -397,12 +404,14 @@ void PeripheryManager_::setup()
     {
         Serial.println("Button rotation");
         button_left.onPressed(right_button_pressed);
+        button_left.onPressedFor(3000, right_button_pressed_long);
         button_right.onPressed(left_button_pressed);
     }
     else
     {
         button_left.onPressed(left_button_pressed);
         button_right.onPressed(right_button_pressed);
+        button_right.onPressedFor(3000, right_button_pressed_long);
     }
 
     button_select.onPressed(select_button_pressed);
