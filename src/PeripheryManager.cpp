@@ -706,6 +706,23 @@ unsigned long long PeripheryManager_::readUptime()
     return uptimeSeconds;
 }
 
+bool PeripheryManager_::isButtonPressed(Buttons button)
+{
+    switch (button)
+    {
+    case Buttons::LEFT:
+        return button_left.isPressed();
+    case Buttons::RIGHT:
+        return button_right.isPressed();
+    case Buttons::SELECT:
+        return button_select.isPressed();
+    case Buttons::RESET:
+        return button_reset.isPressed();
+    default:
+        return false;
+    }
+}
+
 void PeripheryManager_::r2d2(const char *msg)
 {
 #ifdef ULANZI

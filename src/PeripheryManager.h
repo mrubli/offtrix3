@@ -9,6 +9,14 @@
 #define DFMINI_MP3_CLICK_ON "3"
 #define DFMINI_MP3_ENTER "4"
 
+enum class Buttons
+{
+    LEFT,
+    RIGHT,
+    SELECT,
+    RESET
+};
+
 class PeripheryManager_
 {
 private:
@@ -45,6 +53,7 @@ public:
     uint8_t getMatrixPin();
     void setVolume(uint8_t);
     unsigned long long readUptime();
+    bool isButtonPressed(Buttons button);
 };
 
 extern PeripheryManager_ &PeripheryManager;
