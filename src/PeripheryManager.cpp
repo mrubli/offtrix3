@@ -509,31 +509,37 @@ void PeripheryManager_::tick()
 #endif
         if (SENSOR_READING)
         {
+            bool valuesUpdated = false;
             switch (TEMP_SENSOR_TYPE)
             {
             case TEMP_SENSOR_TYPE_BME280:
                 CURRENT_TEMP = bme280.readTemperature();
                 CURRENT_HUM = bme280.readHumidity();
+                valuesUpdated = true;
                 break;
             case TEMP_SENSOR_TYPE_BMP280:
                 CURRENT_TEMP = bmp280.readTemperature();
                 CURRENT_HUM = 0;
+                valuesUpdated = true;
                 break;
             case TEMP_SENSOR_TYPE_HTU21DF:
                 CURRENT_TEMP = htu21df.readTemperature();
                 CURRENT_HUM = htu21df.readHumidity();
+                valuesUpdated = true;
                 break;
             case TEMP_SENSOR_TYPE_SHT31:
                 sht31.readBoth(&CURRENT_TEMP, &CURRENT_HUM);
+                valuesUpdated = true;
                 break;
             default:
-                CURRENT_TEMP = 0;
-                CURRENT_HUM = 0;
                 break;
             }
 
-            CURRENT_TEMP += TEMP_OFFSET;
-            CURRENT_HUM += HUM_OFFSET;
+            if (valuesUpdated)
+            {
+                CURRENT_TEMP += TEMP_OFFSET;
+                CURRENT_HUM += HUM_OFFSET;
+            }
         }
         else
         {
