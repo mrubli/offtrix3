@@ -3,6 +3,7 @@
 #include "Adafruit_BME280.h"
 #include "Adafruit_BMP280.h"
 #include "Adafruit_HTU21DF.h"
+#include "SensirionI2CScd4x.h"
 #include "SoftwareSerial.h"
 #include <DFMiniMp3.h>
 #include <MelodyPlayer/melody_player.h>
@@ -67,6 +68,7 @@ Adafruit_BME280 bme280;
 Adafruit_BMP280 bmp280;
 Adafruit_HTU21DF htu21df;
 Adafruit_SHT31 sht31;
+SensirionI2CScd4x scd4x;
 
 #ifdef awtrix2_upgrade
 #define USED_PHOTOCELL LightDependentResistor::GL5528
@@ -98,8 +100,10 @@ LightDependentResistor photocell(LDR_PIN,
 int readIndex = 0;
 int sampleIndex = 0;
 unsigned long previousMillis_BatTempHum = 0;
+unsigned long previousMillis_Co2 = 0;
 unsigned long previousMillis_LDR = 0;
 const unsigned long interval_BatTempHum = 10000;
+const unsigned long interval_Co2 = 5000;
 const unsigned long interval_LDR = 100;
 int total = 0;
 unsigned long startTime;
@@ -382,6 +386,21 @@ bool PeripheryManager_::isPlaying()
     }
 }
 
+void printUint16Hex(uint16_t value) {
+    Serial.print(value < 4096 ? "0" : "");
+    Serial.print(value < 256 ? "0" : "");
+    Serial.print(value < 16 ? "0" : "");
+    Serial.print(value, HEX);
+}
+
+void printSerialNumber(uint16_t serial0, uint16_t serial1, uint16_t serial2) {
+    Serial.print("SCD4x: Serial number: 0x");
+    printUint16Hex(serial0);
+    printUint16Hex(serial1);
+    printUint16Hex(serial2);
+    Serial.println();
+}
+
 void PeripheryManager_::setup()
 {
     if (DEBUG_MODE)
@@ -447,6 +466,46 @@ void PeripheryManager_::setup()
         if (DEBUG_MODE)
             DEBUG_PRINTLN(F("SHT31 sensor detected"));
         TEMP_SENSOR_TYPE = TEMP_SENSOR_TYPE_SHT31;
+    }
+
+    DEBUG_PRINTLN(F("Scanning for CO2 sensors"));
+    {
+        DEBUG_PRINTLN(F("Looking for SCD4x"));
+        scd4x.begin(Wire);
+
+        uint16_t error;
+
+        error = scd4x.stopPeriodicMeasurement();
+        if (error)
+        {
+            DEBUG_PRINTLN(F("SCD4x: Failed to stop periodic measurements. No sensor?"));
+        }
+        else
+        {
+            uint16_t serial0;
+            uint16_t serial1;
+            uint16_t serial2;
+            error = scd4x.getSerialNumber(serial0, serial1, serial2);
+            if (error)
+            {
+                DEBUG_PRINTLN(F("SCD4x: Failed to read serial number"));
+            }
+            else
+            {
+                error = scd4x.startPeriodicMeasurement();
+                if (error)
+                {
+                    DEBUG_PRINTLN(F("SCD4x: Failed to start periodic measurements"));
+                }
+                else
+                {
+                    DEBUG_PRINTLN(F("SCD4x sensor activated"));
+                    printSerialNumber(serial0, serial1, serial2);
+                    CO2_SENSOR_TYPE = CO2_SENSOR_TYPE_SCD4x;
+                    TEMP_SENSOR_TYPE = TEMP_SENSOR_TYPE_SCD4x;
+                }
+            }
+        }
     }
 
 #ifdef awtrix2_upgrade
@@ -531,6 +590,9 @@ void PeripheryManager_::tick()
                 sht31.readBoth(&CURRENT_TEMP, &CURRENT_HUM);
                 valuesUpdated = true;
                 break;
+            case TEMP_SENSOR_TYPE_SCD4x:
+                // Handled below if CO2_SENSOR_TYPE is CO2_SENSOR_TYPE_SCD4x
+                break;
             default:
                 break;
             }
@@ -545,6 +607,61 @@ void PeripheryManager_::tick()
         {
             SENSORS_STABLE = true;
         }
+    }
+
+    const unsigned long currentMillis_Co2 = millis();
+    if (currentMillis_Co2 - previousMillis_Co2 >= interval_Co2)
+    {
+        if (SENSOR_READING)
+        {
+            switch (CO2_SENSOR_TYPE)
+            {
+            case CO2_SENSOR_TYPE_SCD4x:
+            {
+                {
+                    bool dataReady = false;
+                    const uint16_t error = scd4x.getDataReadyFlag(dataReady);
+                    if (error != 0)
+                    {
+                        DEBUG_PRINTLN(F("SCD4x: Error while reading data ready flag"));
+                        break;
+                    }
+                    else if (!dataReady)
+                    {
+                        DEBUG_PRINTLN(F("SCD4x: Data not ready. Skipping tick."));
+                        break;
+                    }
+                }
+
+                {
+                    uint16_t co2 = 0;
+                    float temperature = 0;
+                    float humidity = 0;
+                    const uint16_t error = scd4x.readMeasurement(co2, temperature, humidity);
+                    if (error != 0)
+                    {
+                        DEBUG_PRINTLN(F("SCD4x: Error while reading measurement"));
+                        break;
+                    }
+                    Serial.printf("SCD4x: CO2: %d, temperature: %f, humidity: %f\r\n",
+                        co2, temperature, humidity);
+
+                    CURRENT_CO2 = co2;
+                    if (TEMP_SENSOR_TYPE == TEMP_SENSOR_TYPE_SCD4x)
+                    {
+                        CURRENT_TEMP = temperature + TEMP_OFFSET;
+                        CURRENT_HUM = humidity;
+                    }
+                }
+
+                break;
+            }
+            default:
+                CURRENT_CO2 = 0;
+                break;
+            }
+        }
+        previousMillis_Co2 = millis();
     }
 
     unsigned long currentMillis_LDR = millis();
