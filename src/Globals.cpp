@@ -378,12 +378,12 @@ bool HA_DISCOVERY = false;
 String HA_PREFIX = "homeassistant";
 // Periphery
 String CURRENT_APP;
-float CURRENT_TEMP;
+float CURRENT_TEMP = 0;
 bool IS_CELSIUS;
 
 uint8_t TEMP_SENSOR_TYPE = TEMP_SENSOR_TYPE_NONE;
 
-float CURRENT_HUM;
+float CURRENT_HUM = 0;
 float CURRENT_LUX;
 int BRIGHTNESS = 120;
 int BRIGHTNESS_PERCENT;
