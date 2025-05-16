@@ -1100,16 +1100,18 @@ void DisplayManager_::loadNativeApps()
     }
   };
 
-  updateApp("Time", TimeApp, SHOW_TIME, 0);
-  updateApp("Date", DateApp, SHOW_DATE, 1);
+  size_t position = 0;
+
+  updateApp("Time", TimeApp, SHOW_TIME, position++);
+  updateApp("Date", DateApp, SHOW_DATE, position++);
 
   if (SENSOR_READING)
   {
-    updateApp("Temperature", TempApp, SHOW_TEMP, 2);
-    updateApp("Humidity", HumApp, SHOW_HUM, 3);
+    updateApp("Temperature", TempApp, SHOW_TEMP, position++);
+    updateApp("Humidity", HumApp, SHOW_HUM, position++);
   }
 #ifdef ULANZI
-  updateApp("Battery", BatApp, SHOW_BAT, 4);
+  updateApp("Battery", BatApp, SHOW_BAT, position++);
 #endif
 
   ui->setApps(Apps);
