@@ -23,4 +23,6 @@ extern const uint16_t icon_234[64];
 extern const uint16_t icon_2075[64];
 extern const uint16_t icon_1486[64];
 
+extern const uint16_t icon_house_co2[7][64];
+
 #endif
