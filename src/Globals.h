@@ -50,6 +50,7 @@ extern bool SHOW_BAT;
 extern String HA_PREFIX;
 extern bool SHOW_TEMP;
 extern bool SHOW_HUM;
+extern bool SHOW_CO2;
 extern bool SHOW_SECONDS;
 extern bool SHOW_WEEKDAY;
 extern int8_t TRANS_EFFECT;
@@ -68,6 +69,7 @@ extern bool UPPERCASE_LETTERS;
 extern bool DFPLAYER_ACTIVE;
 extern float CURRENT_TEMP;
 extern float CURRENT_HUM;
+extern int CURRENT_CO2;
 extern float CURRENT_LUX;
 extern uint16_t LDR_RAW;
 extern String CURRENT_APP;
@@ -96,7 +98,12 @@ extern bool IS_CELSIUS;
 #define TEMP_SENSOR_TYPE_HTU21DF 2
 #define TEMP_SENSOR_TYPE_BMP280 3
 #define TEMP_SENSOR_TYPE_SHT31 4
+#define TEMP_SENSOR_TYPE_SCD4x 5
 extern uint8_t TEMP_SENSOR_TYPE;
+
+#define CO2_SENSOR_TYPE_NONE 0
+#define CO2_SENSOR_TYPE_SCD4x 1
+extern uint8_t CO2_SENSOR_TYPE;
 
 extern bool SOUND_ACTIVE;
 extern String BOOT_SOUND;
@@ -130,6 +137,7 @@ extern uint32_t DATE_COLOR;
 extern uint32_t BAT_COLOR;
 extern uint32_t TEMP_COLOR;
 extern uint32_t HUM_COLOR;
+extern uint32_t CO2_COLOR;
 extern bool ARTNET_MODE;
 extern bool MOODLIGHT_MODE;
 extern double movementFactor;

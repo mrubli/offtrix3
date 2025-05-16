@@ -283,6 +283,7 @@ void loadSettings()
     SHOW_DATE = Settings.getBool("DAT", false);
     SHOW_TEMP = Settings.getBool("TEMP", true);
     SHOW_HUM = Settings.getBool("HUM", true);
+    SHOW_CO2 = Settings.getBool("CO2", true);
     MATRIX_LAYOUT = Settings.getUInt("MAT", 0);
     SCROLL_SPEED = Settings.getUInt("SSPEED", 100);
 #ifdef ULANZI
@@ -333,6 +334,7 @@ void saveSettings()
     Settings.putBool("DAT", SHOW_DATE);
     Settings.putBool("TEMP", SHOW_TEMP);
     Settings.putBool("HUM", SHOW_HUM);
+    Settings.putBool("CO2", SHOW_CO2);
     Settings.putUInt("SSPEED", SCROLL_SPEED);
 #ifdef ULANZI
     Settings.putBool("BAT", SHOW_BAT);
@@ -362,6 +364,7 @@ bool SHOW_WEATHER = true;
 bool SHOW_BAT = true;
 bool SHOW_TEMP = true;
 bool SHOW_HUM = true;
+bool SHOW_CO2 = true;
 bool SHOW_SECONDS = true;
 bool SHOW_WEEKDAY = true;
 String NET_IP = "192.168.178.10";
@@ -382,8 +385,10 @@ float CURRENT_TEMP = 0;
 bool IS_CELSIUS;
 
 uint8_t TEMP_SENSOR_TYPE = TEMP_SENSOR_TYPE_NONE;
+uint8_t CO2_SENSOR_TYPE = CO2_SENSOR_TYPE_NONE;
 
 float CURRENT_HUM = 0;
+int CURRENT_CO2 = 0;
 float CURRENT_LUX;
 int BRIGHTNESS = 120;
 int BRIGHTNESS_PERCENT;
@@ -441,6 +446,7 @@ uint32_t DATE_COLOR = 0;
 uint32_t BAT_COLOR = 0;
 uint32_t TEMP_COLOR = 0;
 uint32_t HUM_COLOR = 0;
+uint32_t CO2_COLOR = 0;
 bool ARTNET_MODE;
 bool MOODLIGHT_MODE;
 long STATS_INTERVAL = 10000;

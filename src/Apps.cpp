@@ -391,6 +391,39 @@ void HumApp(FastLED_NeoMatrix *matrix, MatrixDisplayUiState *state, int16_t x, i
     DisplayManager.matrixPrint("%");
 }
 
+int calculateCo2Level(int co2)
+{
+    constexpr auto MinLevel = 600;
+    constexpr auto MaxLevel = 1600;
+    constexpr auto NumLevels = sizeof(icon_house_co2) / sizeof(icon_house_co2[0]);
+
+    if (co2 <= MinLevel)
+        return 0;
+    if (co2 > MaxLevel)
+        return NumLevels - 1;
+    return (co2 - MinLevel) * (NumLevels - 1) / (MaxLevel - MinLevel);
+}
+
+void Co2App(FastLED_NeoMatrix *matrix, MatrixDisplayUiState *state, int16_t x, int16_t y, GifPlayer *gifPlayer)
+{
+    if (notifyFlag)
+        return;
+    CURRENT_APP = "CO2";
+    currentCustomApp = "";
+    if (CO2_COLOR > 0)
+    {
+        DisplayManager.setTextColor(CO2_COLOR);
+    }
+    else
+    {
+        DisplayManager.getInstance().resetTextColor();
+    }
+    const int level = calculateCo2Level(CURRENT_CO2);
+    matrix->drawRGBBitmap(x, y + 1, icon_house_co2[level], 8, 8);
+    DisplayManager.setCursor(14 + x, 6 + y);
+    DisplayManager.matrixPrint(CURRENT_CO2, 0);
+}
+
 #ifndef awtrix2_upgrade
 void BatApp(FastLED_NeoMatrix *matrix, MatrixDisplayUiState *state, int16_t x, int16_t y, GifPlayer *gifPlayer)
 {

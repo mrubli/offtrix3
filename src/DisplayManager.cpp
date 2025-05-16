@@ -1113,6 +1113,7 @@ void DisplayManager_::loadNativeApps()
 #ifdef ULANZI
   updateApp("Battery", BatApp, SHOW_BAT, position++);
 #endif
+  updateApp("CO2", Co2App, SHOW_CO2, position++);
 
   ui->setApps(Apps);
   setAutoTransition(true);
@@ -1545,6 +1546,10 @@ std::pair<String, AppCallback> getNativeAppByName(const String &appName)
   else if (appName == "Humidity")
   {
     return std::make_pair("Humidity", HumApp);
+  }
+  else if (appName == "CO2")
+  {
+    return std::make_pair("CO2", Co2App);
   }
 #ifdef ULANZI
   else if (appName == "Battery")
@@ -2058,6 +2063,7 @@ String DisplayManager_::getSettings()
   doc["DAT"] = SHOW_DATE;
   doc["HUM"] = SHOW_HUM;
   doc["TEMP"] = SHOW_TEMP;
+  doc["CO2"] = SHOW_CO2;
   doc["BAT"] = SHOW_BAT;
   doc["VOL"] = SOUND_VOLUME;
   doc["OVERLAY"] = getOverlayName();
@@ -2132,6 +2138,7 @@ void DisplayManager_::setNewSettings(const char *json)
   SHOW_DATE = doc.containsKey("DAT") ? doc["DAT"].as<bool>() : SHOW_DATE;
   SHOW_HUM = doc.containsKey("HUM") ? doc["HUM"].as<bool>() : SHOW_HUM;
   SHOW_TEMP = doc.containsKey("TEMP") ? doc["TEMP"].as<bool>() : SHOW_TEMP;
+  SHOW_CO2 = doc.containsKey("CO2") ? doc["CO2"].as<bool>() : SHOW_CO2;
   SHOW_BAT = doc.containsKey("BAT") ? doc["BAT"].as<bool>() : SHOW_BAT;
   SOUND_ACTIVE = doc.containsKey("SOUND") ? doc["SOUND"].as<bool>() : SOUND_ACTIVE;
 

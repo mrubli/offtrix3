@@ -73,7 +73,7 @@ int8_t dateFormatIndex;
 uint8_t dateFormatCount = 9;
 
 int8_t appsIndex;
-uint8_t appsCount = 5;
+uint8_t appsCount = 6;
 
 MenuState currentState = MainMenu;
 
@@ -193,6 +193,9 @@ String MenuManager_::menutext()
             DisplayManager.drawBMP(0, 0, icon_1486, 8, 8);
             return SHOW_BAT ? "ON" : "OFF";
 #endif
+        case 5:
+            DisplayManager.drawBMP(0, 0, icon_house_co2[0], 8, 8);
+            return SHOW_CO2 ? "ON" : "OFF";
         default:
             break;
         }
@@ -392,6 +395,9 @@ void MenuManager_::selectButton()
             SHOW_BAT = !SHOW_BAT;
             break;
 #endif
+        case 5:
+            SHOW_CO2 = !SHOW_CO2;
+            break;
         default:
             break;
         }
