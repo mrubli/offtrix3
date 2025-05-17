@@ -76,6 +76,12 @@ extern const char HAhumName[];
 extern const char HAhumClass[];
 extern const char HAhumUnit[];
 
+extern const char HAco2ID[];
+extern const char HAco2Icon[];
+extern const char HAco2Name[];
+extern const char HAco2Class[];
+extern const char HAco2Unit[];
+
 #ifdef ULANZI
 extern const char HAbatID[];
 extern const char HAbatIcon[];

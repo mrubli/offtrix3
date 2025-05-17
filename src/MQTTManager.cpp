@@ -23,10 +23,10 @@ HASwitch *transition = nullptr;
 #ifndef awtrix2_upgrade
 HASensor *battery = nullptr;
 #endif
-HASensor *temperature, *humidity, *illuminance, *uptime, *strength, *version, *ram, *curApp, *myOwnID, *ipAddr = nullptr;
+HASensor *temperature, *humidity, *co2, *illuminance, *uptime, *strength, *version, *ram, *curApp, *myOwnID, *ipAddr = nullptr;
 HABinarySensor *btnleft, *btnmid, *btnright = nullptr;
 bool connected;
-char matID[40], ind1ID[40], ind2ID[40], ind3ID[40], briID[40], btnAID[40], btnBID[40], btnCID[40], appID[40], tempID[40], humID[40], luxID[40], verID[40], ramID[40], upID[40], sigID[40], btnLID[40], btnMID[40], btnRID[40], transID[40], doUpdateID[40], batID[40], myID[40], sSpeed[40], effectID[40], ipAddrID[40];
+char matID[40], ind1ID[40], ind2ID[40], ind3ID[40], briID[40], btnAID[40], btnBID[40], btnCID[40], appID[40], tempID[40], humID[40], co2ID[40], luxID[40], verID[40], ramID[40], upID[40], sigID[40], btnLID[40], btnMID[40], btnRID[40], transID[40], doUpdateID[40], batID[40], myID[40], sSpeed[40], effectID[40], ipAddrID[40];
 long previousMillis_Stats;
 std::map<String, String> mqttValues;
 std::vector<String> topicsToSubscribe;
@@ -504,6 +504,8 @@ void MQTTManager_::sendStats()
             temperature->setValue(buffer);
             snprintf(buffer, 5, "%.0f", CURRENT_HUM);
             humidity->setValue(buffer);
+            snprintf(buffer, 5, "%d", CURRENT_CO2);
+            co2->setValue(buffer);
         }
 
         snprintf(buffer, 5, "%.0f", CURRENT_LUX);
@@ -673,6 +675,13 @@ void MQTTManager_::setup()
         humidity->setName(HAhumName);
         humidity->setDeviceClass(HAhumClass);
         humidity->setUnitOfMeasurement(HAhumUnit);
+
+        sprintf(co2ID, HAco2ID, macStr);
+        co2 = new HASensor(co2ID);
+        co2->setIcon(HAco2Icon);
+        co2->setName(HAco2Name);
+        co2->setDeviceClass(HAco2Class);
+        co2->setUnitOfMeasurement(HAco2Unit);
 
 #ifdef ULANZI
         sprintf(batID, HAbatID, macStr);
