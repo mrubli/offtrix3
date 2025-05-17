@@ -12,11 +12,11 @@ bool notifyFlag = false;
 
 void StatusOverlay(FastLED_NeoMatrix *matrix, MatrixDisplayUiState *state, GifPlayer *gifPlayer)
 {
-    if (!WiFi.isConnected())
+    if (!WiFi.isConnected() && !OFFLINE_MODE)
     {
         matrix->drawPixel(0, 0, fadeColor(0xFF0000, 2000));
     }
-    if (!MQTTManager.isConnected())
+    if (!MQTTManager.isConnected() && !OFFLINE_MODE)
     {
         matrix->drawPixel(0, 7, fadeColor(0xFFFF00, 2000));
     }

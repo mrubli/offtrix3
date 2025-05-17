@@ -469,3 +469,4 @@ int WEB_PORT = 80;
 OverlayEffect GLOBAL_OVERLAY = NONE;
 String HOSTNAME = "";
 bool BUZ_VOL = false;
+bool OFFLINE_MODE = false;

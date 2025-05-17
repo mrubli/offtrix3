@@ -158,4 +158,5 @@ extern OverlayEffect GLOBAL_OVERLAY;
 extern String HOSTNAME;
 extern int WEB_PORT;
 extern bool BUZ_VOL;
+extern bool OFFLINE_MODE;
 #endif // Globals_H

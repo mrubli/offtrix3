@@ -44,6 +44,8 @@ TaskHandle_t taskHandle;
 volatile bool StopTask = false;
 bool stopBoot;
 
+static bool startedInApMode = false;
+
 void BootAnimation(void *parameter)
 {
   const TickType_t xDelay = 1 / portTICK_PERIOD_MS;
@@ -53,63 +55,107 @@ void BootAnimation(void *parameter)
     {
       break;
     }
-    DisplayManager.HSVtext(4, 6, "AWTRIX", true, 0);
+    DisplayManager.HSVtext(4, 6, "OFFTRIX", true, 0);
     vTaskDelay(xDelay);
   }
   vTaskDelete(NULL);
 }
 
+void setupApMode()
+{
+  DEBUG_PRINTLN("Starting up in AP mode");
+  startedInApMode = true;
+  AP_MODE = true;
+  StopTask = true;
+}
+
+void setupNormalMode()
+{
+  DEBUG_PRINTLN("Starting up in connected/offline mode");
+  // timer_init();
+  DisplayManager.loadNativeApps();
+  DisplayManager.loadCustomApps();
+  UpdateManager.setup();
+  if (!OFFLINE_MODE)
+  {
+    DisplayManager.startArtnet();
+  }
+  StopTask = true;
+  float x = 4;
+  String textForDisplay = "OFFTRIX   ";
+  if (!OFFLINE_MODE)
+  {
+    textForDisplay += ServerManager.myIP.toString();
+    if (WEB_PORT != 80)
+    {
+      textForDisplay += ":" + String(WEB_PORT);
+    }
+  }
+  else
+  {
+    textForDisplay = "OFFTRIX   Offline mode";
+  }
+
+  int textLength = textForDisplay.length() * 4;
+  while (x >= -textLength)
+  {
+    DisplayManager.HSVtext(x, 6, textForDisplay.c_str(), true, 0);
+    x -= 0.18;
+  }
+
+  if (!OFFLINE_MODE)
+  {
+    if (MQTT_HOST != "")
+    {
+      DisplayManager.HSVtext(4, 6, "MQTT...", true, 0);
+      MQTTManager.setup();
+      MQTTManager.tick();
+    }
+  }
+}
+
 void setup()
 {
+  // Turn the buzzer off (presumably)
   pinMode(15, OUTPUT);
   digitalWrite(15, LOW);
+
   delay(2000);
   Serial.begin(115200);
   loadSettings();
   PeripheryManager.setup();
   ServerManager.loadSettings();
+
+  // Bring up the display and show the version number, followed by the boot animation ("AWTRIX")
   DisplayManager.setup();
   DisplayManager.HSVtext(9, 6, VERSION, true, 0);
   delay(500);
   xTaskCreatePinnedToCore(BootAnimation, "Task", 10000, NULL, 1, &taskHandle, 0);
-  ServerManager.setup();
-  if (ServerManager.isConnected)
+
+  if (PeripheryManager.isButtonPressed(Buttons::RIGHT))
   {
-    // timer_init();
-    DisplayManager.loadNativeApps();
-    DisplayManager.loadCustomApps();
-    UpdateManager.setup();
-    DisplayManager.startArtnet();
-    StopTask = true;
-    float x = 4;
-    String textForDisplay = "AWTRIX   " + ServerManager.myIP.toString();
+    DEBUG_PRINTLN("RIGHT button held down on boot, activating offline mode");
+    OFFLINE_MODE = true;
+  }
 
-    if (WEB_PORT != 80)
-    {
-      textForDisplay += ":" + String(WEB_PORT);
-    }
+  if (!OFFLINE_MODE)
+  {
+    // Bring up the Wifi (in client mode or, if that fails, in AP mode)
+    ServerManager.setup();
+    DEBUG_PRINTF("Wifi is up. Connected: %s", ServerManager.isConnected ? "true" : "false");
+  }
 
-    int textLength = textForDisplay.length() * 4;
-    while (x >= -textLength)
-    {
-      DisplayManager.HSVtext(x, 6, textForDisplay.c_str(), true, 0);
-      x -= 0.18;
-    }
+  AP_MODE = !ServerManager.isConnected && !OFFLINE_MODE;
 
-    
-      if (MQTT_HOST != "")
-      {
-        DisplayManager.HSVtext(4, 6, "MQTT...", true, 0);
-        MQTTManager.setup();
-        MQTTManager.tick();
-      }
-    
+  if (AP_MODE)
+  {
+    setupApMode();
   }
   else
   {
-    AP_MODE = true;
-    StopTask = true;
+    setupNormalMode();
   }
+
   delay(200);
   DisplayManager.setBrightness(BRIGHTNESS);
 }
@@ -117,10 +163,20 @@ void setup()
 void loop()
 {
   timer_tick();
-  ServerManager.tick();
+
+  if (startedInApMode && !AP_MODE)
+  {
+    setupNormalMode();
+    startedInApMode = false;
+  }
+
+  if (!OFFLINE_MODE)
+  {
+    ServerManager.tick();
+  }
   DisplayManager.tick();
   PeripheryManager.tick();
-  if (ServerManager.isConnected)
+  if (ServerManager.isConnected && !OFFLINE_MODE)
   {
     MQTTManager.tick();
   }
