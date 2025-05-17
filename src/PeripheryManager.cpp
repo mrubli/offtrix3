@@ -150,6 +150,14 @@ void left_button_pressed()
         if (DEBUG_MODE)
             DEBUG_PRINTLN(F("Left button clicked but blocked"));
     }
+
+    // In AP mode, the user can switch to OFFLINE mode by pressing the left button
+    if (AP_MODE)
+    {
+        DEBUG_PRINTLN(F("Exiting AP mode and entering OFFLINE mode ..."));
+        AP_MODE = false;
+        OFFLINE_MODE = true;
+    }
 }
 
 
