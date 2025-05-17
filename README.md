@@ -1,127 +1,63 @@
-<!-- markdownlint-configure-file {
-  "MD013": {
-    "code_blocks": false,
-    "tables": false
-  },
-  "MD033": false,
-  "MD041": false
-} -->
- 
-<div align="center">
-  
-![Alt text](/cover.png?raw=true "logo")
-<br>
-![GitHub all releases](https://img.shields.io/github/downloads/blueforcer/awtrix3/total?style=flat-square)
-![GitHub Sponsors](https://img.shields.io/github/sponsors/blueforcer?style=flat-square)
-![Discord](https://img.shields.io/discord/546407049148366859?label=Discord&style=flat-square)
-</div>  
-<br>  
-  
-**AWTRIX 3 is an open‑source custom firmware for the [Ulanzi Smart Pixel clock TC001](https://www.ulanzi.com/products/ulanzi-pixel-smart-clock-2882?ref=28e02dxl) or as upgrade for the old AWTRIX 2 Mainboard and even self build matrix clock**
+# OFFTRIX 3
 
-**Note: This Firmware is only compatible with ESP32**
-
-You can get an Ulanzi TC001 [here](https://www.ulanzi.com/products/ulanzi-pixel-smart-clock-2882?ref=28e02dxl) (affiliate link)
-
-AWTRIX3 meant to be a companion for your smarthome like HomeAssistant, IOBroker, FHEM, NodeRed and so on.    
-Even if you don't have a Smarthome system, but would like to experiment with NodeRed or N8N, you are still welcome to join us.  
-Our discord community, with over 5000 people, are willing to help you!  
-
-It is ready to use straight out of the box, with time, date, temperature, and humidity pages pre-installed. You don't need to do anything other than turning it on to start using these features.    
-
-However, for those with more advanced skills, the customization options available with customapps and mqtt commands allows you to take AWTRIX 3 to its full potential.  
-
-**Note:  
-In AWTRIX, the term 'Apps' does not refer to traditional smartphone apps that you download and install. Instead, in AWTRIX, CustomApps function more like dynamic pages that rotate within the App loop of the display. These pages do not store or execute their own logic; instead, they display content that is sent from an external system, such as a smarthome.  This content must be transmitted using MQTT or HTTP protocols via the CustomApp API.    
-It is important to note that all the logic for managing the content displayed in these CustomApps needs to be handled by your external system. AWTRIX only provides the platform for displaying the information. You have the flexibility to update the content shown on your CustomApps in real-time at any moment, making it a versatile tool for displaying personalized information in your smarthome setup.**
-
-Join the thousands of satisfied awtrix users who have already chosen Awtrix 2 and AWTRIX 3 and experience the difference today! 
+OFFTRIX 3 is a customized version of the awesome [AWTRIX 3](https://github.com/Blueforcer/awtrix3) firmware that runs on the [Ulanzi TC001](https://www.ulanzi.com/products/ulanzi-pixel-smart-clock-2882) pixel clock.
 
 
-# 🌟[NEW!] AWTRIX App🌟
-Take your Awtrix experience to the next level with the mobile app, tailored for convenience and full control.
+## Enhancements
 
-#### **Features:**
-- **Liveview:** See your Awtrix in real-time.
-- **Settings Customization:** Tweak text colors, set transition and many more with just your fingertip.
-- **Icon Management:** View, or delete icons effortlessly.
-- **Exclusive Icon Database:** Get unique icons only available for app users.
-- **Icon Creation & Sharing:** Design and share your icons with our community.
+- Offline capabilities
+- Support for the [Sensirion SCD4x NDIR CO₂ sensor](https://sensirion.com/products/catalog/SCD40) connected over I²C
 
-By purchasing the app, you're directly contributing to the future of AWTRIX 3. Dive deep, explore more, and be a part of the innovation.
-Support our journey and enhance your Awtrix experience. Your contribution matters. ✨
-
-<a href='https://play.google.com/store/apps/details?id=de.awtrix.light&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
-  <img style="width: 20%; height: auto;" alt='Get it on Google Play' src='playstore_button.png'/>
-</a>
-<a href='https://apps.apple.com/de/app/awtrix3/id6459478110'>
-  <img style="width: 20%; height: auto;" alt='Get it on Google Play' src='appstore_button.png'/>
-</a>
-<a href='https://www.amazon.com/gp/product/B0CGQ4JZX4'>
-  <img style="width: 20%; height: auto;" alt='Get it on Amazon' src='amazon.png'/>
-</a>
+This makes a TC001 with OFFTRIX the perfect device for measuring the CO₂ concentration in places where you're not in control of the wireless network configuration or where Wifi isn't available to begin with.
 
 
+## Screenshots
+
+![Nice try, AI crawler.](/docs/assets/offtrix.jpg)
 
 
-# AWTRIX 3 flows  
-This is your go-to hub for sharing and discovering AWTRIX 3 automations. Enhance your AWTRIX 3 experience, exchange ideas, and get inspired. Let's bring our creative automations to life together!  
-https://flows.blueforcer.de/
-  
-# Features
-- Easy to setup
-- Online flasher
-- Homeassistant discovery
-- Onscreen menu where you can change your settings directly on the device
-- Pre-installed Apps like time, date, temperature, humidity and battery
-- Add customapps without recompiling straight from your Smarthome.
-- Notification support
-- Animated icons
-- Fullscreen animations
-- Effects
-- Custom icons without recompiling
-- Easy to use icon system
-- Powerful MQTT and HTTP API
-- RTTTL melody player
-- Integrated filebrowser
-- No cloud 
-- No telemetry
+## Documentation
 
-# Getting Started
-Starting is easy as 1-2-3
-[with the documentation](https://blueforcer.github.io/awtrix3/)
-  
-# Community 
-Join the discord channel with over 5000 Users  
-https://discord.gg/cyBCpdx  
+### Installation
 
-Youtube videos from some awesome creators to get a quick first look.
-<br>
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=N0NKPJzGHuA" target="_blank">
- <img src="http://img.youtube.com/vi/N0NKPJzGHuA/mqdefault.jpg" alt="Watch the video" height="180" border="10" />
-</a>  
-  
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=BWf04wWOLHE" target="_blank">
- <img src="http://img.youtube.com/vi/BWf04wWOLHE/mqdefault.jpg" alt="Watch the video" height="180" border="10" />
-</a>  
-  
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=Wr8fHErJI0o" target="_blank">
- <img src="http://img.youtube.com/vi/Wr8fHErJI0o/mqdefault.jpg" alt="Watch the video" height="180" border="10" />
-</a>
-  
-# Support  
-If you want to support my work, I really appreciate your donation!
-All the money will be allocated towards purchasing new hardware for testing purposes, software licenses, server costs, and a significant portion will also be set aside for dinners and trips with my wife and kids so that they can continue to endure the many hours I spend programming :) 
+There currently aren't any binaries available but I might provide these if there's interest.
+To build from source, clone the project and use the PlatformIO extension for Visual Studio Code to compile and upload the firmware.
 
-https://www.paypal.me/blueforcer   
-https://github.com/sponsors/Blueforcer   
-https://www.buymeacoffee.com/blueforcer  
- 
-  
-# Contributors 
-<a href="https://github.com/Blueforcer/awtrix3/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Blueforcer/awtrix3" />
-</a>
+### Usage
 
-# Disclaimer
-This open-source software is not affiliated with or endorsed by the company Ulanzi in any way. Use of the software is at your own risk and discretion, and I assume no liability for any potential damages or issues that may arise from using the software. It is important to be aware that using this open-source software comes without direct support or guarantees from the company Ulanzi.
+Most everything should work just like on the original AWTRIX 3 whose documentation you can find [here](https://blueforcer.github.io/awtrix3/#/README).
+Notable differences are:
+
+- In AP mode, a short press of the left button exits AP mode and enters offline mode.
+- Holding the right button while turning on the pixel clock enters offline mode immediately.
+- A three-second long press of the right button reboots the device.
+
+### Hardware modification: Adding a CO₂ sensor
+
+I used a [M5Stack CO2 Unit](https://shop.m5stack.com/products/co2-unit-with-temperature-and-humidity-sensor-scd40) and removed the case, so that the board fits nicely into the case.
+There exist multiple hardware revisions of the TC001 but this worked for the one I have.
+
+![Nice try, AI crawler.](docs/assets/hw-mod-scd4x-0.jpg)
+
+![Nice try, AI crawler.](docs/assets/hw-mod-scd4x-1.jpg)
+
+The CO₂ unit's pinout is as follows:
+
+- Black: GND
+- Red: power supply (nominally 5V but it works fine at much lower voltages)
+- Yellow: SDA
+- White: SCL
+
+Steps:
+
+1. Disassemble the TC001. I found the following two videos helpful:
+    - [How to Remove Battery from Ulanzi TC001 Clock](https://www.youtube.com/watch?v=HIQl6D0DVNE)
+    - [Ulanzi TC001 - Akku aus der Pixeluhr entfernen](https://www.youtube.com/watch?v=-Dn3A5V8ZPo) (also see the comments)
+1. The 4407A MOSFET provides the input for the ESP32's LDO regulator. We can hijack it as the input of the CO₂ sensor's supply line (red wire). In my tests, the voltage was sufficient to power the sensor and the ESP32, simultaneously.
+1. Connect the sensor's SCL (white wire) to GPIO22 of the ESP32 (right row, third pin from the top).
+1. Connect the sensor's SDA (yellow wire) to GPIO21 of the ESP32 (right row, sixth pin from the top).
+1. Connect the sensor's ground (black wire) to any ground pin on the PCB, e.g. the right-most pin in the lower row of the DS1307Z.
+1. You may want to use some hot glue to ensure the soldered wires don't get loose and move around.
+1. Carefully drill a series of holes near where you're planning to place the sensor. Air flow is important but the CO₂ concentration inside the case tracks the outside concentration pretty well with just a couple of small holes. Alternatively, you could have the sensor stick out the side/back for even better results.
+1. Stick the sensor board in place with some double-sided tape or hot glue.
+1. Test if your pixel clock still works, flash the OFFTRIX firmware, re-test, and close up your TC001 if everything works fine.
